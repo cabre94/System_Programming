@@ -1,0 +1,503 @@
+58620 execve("./launcher", ["./launcher"], 0x7fff5bd84988 /* 65 vars */) = 0
+58620 brk(NULL)                         = 0x55d59d614000
+58620 arch_prctl(0x3001 /* ARCH_??? */, 0x7fff732fc900) = -1 EINVAL (Invalid argument)
+58620 access("/etc/ld.so.preload", R_OK) = -1 ENOENT (No such file or directory)
+58620 openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+58620 newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=76645, ...}, AT_EMPTY_PATH) = 0
+58620 mmap(NULL, 76645, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f2d26ab9000
+58620 close(3)                          = 0
+58620 openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+58620 read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0000\342\2\0\0\0\0\0"..., 832) = 832
+58620 pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+58620 pread64(3, "\4\0\0\0 \0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0"..., 48, 848) = 48
+58620 pread64(3, "\4\0\0\0\24\0\0\0\3\0\0\0GNU\0\270\3{b`\206SF\200#!\335\"V\270\255"..., 68, 896) = 68
+58620 newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=2215936, ...}, AT_EMPTY_PATH) = 0
+58620 mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f2d26ab7000
+58620 pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+58620 mmap(NULL, 2260144, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f2d2688f000
+58620 mprotect(0x7f2d268bb000, 2002944, PROT_NONE) = 0
+58620 mmap(0x7f2d268bb000, 1654784, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x2c000) = 0x7f2d268bb000
+58620 mmap(0x7f2d26a4f000, 344064, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1c0000) = 0x7f2d26a4f000
+58620 mmap(0x7f2d26aa4000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x214000) = 0x7f2d26aa4000
+58620 mmap(0x7f2d26aaa000, 52400, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7f2d26aaa000
+58620 close(3)                          = 0
+58620 mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f2d2688d000
+58620 arch_prctl(ARCH_SET_FS, 0x7f2d26ab85c0) = 0
+58620 set_tid_address(0x7f2d26ab8890)   = 58620
+58620 set_robust_list(0x7f2d26ab88a0, 24) = 0
+58620 mprotect(0x7f2d26aa4000, 12288, PROT_READ) = 0
+58620 mprotect(0x55d59d510000, 4096, PROT_READ) = 0
+58620 mprotect(0x7f2d26aff000, 8192, PROT_READ) = 0
+58620 prlimit64(0, RLIMIT_STACK, NULL, {rlim_cur=8192*1024, rlim_max=RLIM64_INFINITY}) = 0
+58620 munmap(0x7f2d26ab9000, 76645)     = 0
+58620 clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7f2d26ab8890) = 58621
+58620 clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD <unfinished ...>
+58621 set_robust_list(0x7f2d26ab88a0, 24) = 0
+58620 <... clone resumed>, child_tidptr=0x7f2d26ab8890) = 58622
+58622 set_robust_list(0x7f2d26ab88a0, 24 <unfinished ...>
+58621 execve("mq_creator", ["mq_creator", "/mq_0", "64", "10"], 0x7fff732fca78 /* 65 vars */ <unfinished ...>
+58620 clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD <unfinished ...>
+58622 <... set_robust_list resumed>)    = 0
+58622 execve("mq_creator", ["mq_creator", "/mq_1", "64", "10"], 0x7fff732fca78 /* 65 vars */ <unfinished ...>
+58620 <... clone resumed>, child_tidptr=0x7f2d26ab8890) = 58623
+58623 set_robust_list(0x7f2d26ab88a0, 24 <unfinished ...>
+58620 clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD <unfinished ...>
+58623 <... set_robust_list resumed>)    = 0
+58621 <... execve resumed>)             = 0
+58623 execve("mq_producer", ["mq_producer", "/mq_0", "5"], 0x7fff732fca78 /* 65 vars */ <unfinished ...>
+58621 brk(NULL <unfinished ...>
+58620 <... clone resumed>, child_tidptr=0x7f2d26ab8890) = 58624
+58624 set_robust_list(0x7f2d26ab88a0, 24 <unfinished ...>
+58621 <... brk resumed>)                = 0x55e4eebad000
+58620 clock_nanosleep(CLOCK_REALTIME, 0, {tv_sec=5, tv_nsec=0},  <unfinished ...>
+58624 <... set_robust_list resumed>)    = 0
+58622 <... execve resumed>)             = 0
+58621 arch_prctl(0x3001 /* ARCH_??? */, 0x7ffd99864e20 <unfinished ...>
+58624 execve("mq_producer", ["mq_producer", "/mq_1", "5"], 0x7fff732fca78 /* 65 vars */ <unfinished ...>
+58622 brk(NULL <unfinished ...>
+58621 <... arch_prctl resumed>)         = -1 EINVAL (Invalid argument)
+58623 <... execve resumed>)             = 0
+58622 <... brk resumed>)                = 0x56094fffa000
+58621 access("/etc/ld.so.preload", R_OK <unfinished ...>
+58622 arch_prctl(0x3001 /* ARCH_??? */, 0x7ffd3bf38200 <unfinished ...>
+58623 brk(NULL <unfinished ...>
+58621 <... access resumed>)             = -1 ENOENT (No such file or directory)
+58623 <... brk resumed>)                = 0x560307be4000
+58622 <... arch_prctl resumed>)         = -1 EINVAL (Invalid argument)
+58621 openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC <unfinished ...>
+58623 arch_prctl(0x3001 /* ARCH_??? */, 0x7ffeb3759540 <unfinished ...>
+58621 <... openat resumed>)             = 3
+58623 <... arch_prctl resumed>)         = -1 EINVAL (Invalid argument)
+58622 access("/etc/ld.so.preload", R_OK <unfinished ...>
+58621 newfstatat(3, "",  <unfinished ...>
+58623 access("/etc/ld.so.preload", R_OK <unfinished ...>
+58622 <... access resumed>)             = -1 ENOENT (No such file or directory)
+58623 <... access resumed>)             = -1 ENOENT (No such file or directory)
+58621 <... newfstatat resumed>{st_mode=S_IFREG|0644, st_size=76645, ...}, AT_EMPTY_PATH) = 0
+58623 openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC <unfinished ...>
+58622 openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC <unfinished ...>
+58623 <... openat resumed>)             = 3
+58621 mmap(NULL, 76645, PROT_READ, MAP_PRIVATE, 3, 0 <unfinished ...>
+58623 newfstatat(3, "",  <unfinished ...>
+58622 <... openat resumed>)             = 3
+58623 <... newfstatat resumed>{st_mode=S_IFREG|0644, st_size=76645, ...}, AT_EMPTY_PATH) = 0
+58621 <... mmap resumed>)               = 0x7fceb309e000
+58623 mmap(NULL, 76645, PROT_READ, MAP_PRIVATE, 3, 0 <unfinished ...>
+58622 newfstatat(3, "",  <unfinished ...>
+58623 <... mmap resumed>)               = 0x7f04b46df000
+58621 close(3 <unfinished ...>
+58623 close(3 <unfinished ...>
+58622 <... newfstatat resumed>{st_mode=S_IFREG|0644, st_size=76645, ...}, AT_EMPTY_PATH) = 0
+58621 <... close resumed>)              = 0
+58623 <... close resumed>)              = 0
+58622 mmap(NULL, 76645, PROT_READ, MAP_PRIVATE, 3, 0 <unfinished ...>
+58621 openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC <unfinished ...>
+58623 openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC <unfinished ...>
+58622 <... mmap resumed>)               = 0x7f7403fba000
+58623 <... openat resumed>)             = 3
+58621 <... openat resumed>)             = 3
+58623 read(3,  <unfinished ...>
+58622 close(3 <unfinished ...>
+58623 <... read resumed>"\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0000\342\2\0\0\0\0\0"..., 832) = 832
+58621 read(3,  <unfinished ...>
+58622 <... close resumed>)              = 0
+58623 pread64(3,  <unfinished ...>
+58621 <... read resumed>"\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0000\342\2\0\0\0\0\0"..., 832) = 832
+58623 <... pread64 resumed>"\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+58622 openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC <unfinished ...>
+58623 pread64(3,  <unfinished ...>
+58621 pread64(3,  <unfinished ...>
+58623 <... pread64 resumed>"\4\0\0\0 \0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0"..., 48, 848) = 48
+58622 <... openat resumed>)             = 3
+58623 pread64(3,  <unfinished ...>
+58621 <... pread64 resumed>"\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+58623 <... pread64 resumed>"\4\0\0\0\24\0\0\0\3\0\0\0GNU\0\270\3{b`\206SF\200#!\335\"V\270\255"..., 68, 896) = 68
+58622 read(3,  <unfinished ...>
+58623 newfstatat(3, "",  <unfinished ...>
+58621 pread64(3,  <unfinished ...>
+58623 <... newfstatat resumed>{st_mode=S_IFREG|0644, st_size=2215936, ...}, AT_EMPTY_PATH) = 0
+58622 <... read resumed>"\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0000\342\2\0\0\0\0\0"..., 832) = 832
+58623 mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0 <unfinished ...>
+58621 <... pread64 resumed>"\4\0\0\0 \0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0"..., 48, 848) = 48
+58623 <... mmap resumed>)               = 0x7f04b46dd000
+58622 pread64(3,  <unfinished ...>
+58621 pread64(3,  <unfinished ...>
+58623 pread64(3,  <unfinished ...>
+58622 <... pread64 resumed>"\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+58623 <... pread64 resumed>"\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+58621 <... pread64 resumed>"\4\0\0\0\24\0\0\0\3\0\0\0GNU\0\270\3{b`\206SF\200#!\335\"V\270\255"..., 68, 896) = 68
+58623 mmap(NULL, 2260144, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0 <unfinished ...>
+58622 pread64(3,  <unfinished ...>
+58623 <... mmap resumed>)               = 0x7f04b44b5000
+58621 newfstatat(3, "",  <unfinished ...>
+58623 mprotect(0x7f04b44e1000, 2002944, PROT_NONE <unfinished ...>
+58622 <... pread64 resumed>"\4\0\0\0 \0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0"..., 48, 848) = 48
+58623 <... mprotect resumed>)           = 0
+58621 <... newfstatat resumed>{st_mode=S_IFREG|0644, st_size=2215936, ...}, AT_EMPTY_PATH) = 0
+58623 mmap(0x7f04b44e1000, 1654784, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x2c000 <unfinished ...>
+58622 pread64(3,  <unfinished ...>
+58621 mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0 <unfinished ...>
+58624 <... execve resumed>)             = 0
+58623 <... mmap resumed>)               = 0x7f04b44e1000
+58622 <... pread64 resumed>"\4\0\0\0\24\0\0\0\3\0\0\0GNU\0\270\3{b`\206SF\200#!\335\"V\270\255"..., 68, 896) = 68
+58623 mmap(0x7f04b4675000, 344064, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1c0000 <unfinished ...>
+58621 <... mmap resumed>)               = 0x7fceb309c000
+58624 brk(NULL <unfinished ...>
+58623 <... mmap resumed>)               = 0x7f04b4675000
+58622 newfstatat(3, "",  <unfinished ...>
+58624 <... brk resumed>)                = 0x5591ad611000
+58623 mmap(0x7f04b46ca000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x214000 <unfinished ...>
+58621 pread64(3,  <unfinished ...>
+58624 arch_prctl(0x3001 /* ARCH_??? */, 0x7ffe447e1be0 <unfinished ...>
+58623 <... mmap resumed>)               = 0x7f04b46ca000
+58622 <... newfstatat resumed>{st_mode=S_IFREG|0644, st_size=2215936, ...}, AT_EMPTY_PATH) = 0
+58624 <... arch_prctl resumed>)         = -1 EINVAL (Invalid argument)
+58623 mmap(0x7f04b46d0000, 52400, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0 <unfinished ...>
+58621 <... pread64 resumed>"\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+58624 access("/etc/ld.so.preload", R_OK <unfinished ...>
+58623 <... mmap resumed>)               = 0x7f04b46d0000
+58622 mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0 <unfinished ...>
+58624 <... access resumed>)             = -1 ENOENT (No such file or directory)
+58621 mmap(NULL, 2260144, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0 <unfinished ...>
+58624 openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC <unfinished ...>
+58623 close(3 <unfinished ...>
+58622 <... mmap resumed>)               = 0x7f7403fb8000
+58624 <... openat resumed>)             = 3
+58623 <... close resumed>)              = 0
+58621 <... mmap resumed>)               = 0x7fceb2e74000
+58624 newfstatat(3, "",  <unfinished ...>
+58622 pread64(3,  <unfinished ...>
+58624 <... newfstatat resumed>{st_mode=S_IFREG|0644, st_size=76645, ...}, AT_EMPTY_PATH) = 0
+58623 mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0 <unfinished ...>
+58621 mprotect(0x7fceb2ea0000, 2002944, PROT_NONE <unfinished ...>
+58624 mmap(NULL, 76645, PROT_READ, MAP_PRIVATE, 3, 0 <unfinished ...>
+58623 <... mmap resumed>)               = 0x7f04b44b3000
+58622 <... pread64 resumed>"\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+58624 <... mmap resumed>)               = 0x7f42c2e07000
+58623 arch_prctl(ARCH_SET_FS, 0x7f04b46de5c0 <unfinished ...>
+58621 <... mprotect resumed>)           = 0
+58624 close(3 <unfinished ...>
+58623 <... arch_prctl resumed>)         = 0
+58622 mmap(NULL, 2260144, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0 <unfinished ...>
+58624 <... close resumed>)              = 0
+58623 set_tid_address(0x7f04b46de890 <unfinished ...>
+58621 mmap(0x7fceb2ea0000, 1654784, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x2c000 <unfinished ...>
+58624 openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC <unfinished ...>
+58623 <... set_tid_address resumed>)    = 58623
+58622 <... mmap resumed>)               = 0x7f7403d90000
+58624 <... openat resumed>)             = 3
+58623 set_robust_list(0x7f04b46de8a0, 24 <unfinished ...>
+58621 <... mmap resumed>)               = 0x7fceb2ea0000
+58624 read(3,  <unfinished ...>
+58623 <... set_robust_list resumed>)    = 0
+58622 mprotect(0x7f7403dbc000, 2002944, PROT_NONE <unfinished ...>
+58624 <... read resumed>"\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0000\342\2\0\0\0\0\0"..., 832) = 832
+58621 mmap(0x7fceb3034000, 344064, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1c0000 <unfinished ...>
+58624 pread64(3,  <unfinished ...>
+58622 <... mprotect resumed>)           = 0
+58624 <... pread64 resumed>"\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+58623 mprotect(0x7f04b46ca000, 12288, PROT_READ <unfinished ...>
+58621 <... mmap resumed>)               = 0x7fceb3034000
+58624 pread64(3,  <unfinished ...>
+58622 mmap(0x7f7403dbc000, 1654784, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x2c000 <unfinished ...>
+58624 <... pread64 resumed>"\4\0\0\0 \0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0"..., 48, 848) = 48
+58621 mmap(0x7fceb3089000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x214000 <unfinished ...>
+58624 pread64(3,  <unfinished ...>
+58623 <... mprotect resumed>)           = 0
+58622 <... mmap resumed>)               = 0x7f7403dbc000
+58624 <... pread64 resumed>"\4\0\0\0\24\0\0\0\3\0\0\0GNU\0\270\3{b`\206SF\200#!\335\"V\270\255"..., 68, 896) = 68
+58621 <... mmap resumed>)               = 0x7fceb3089000
+58623 mprotect(0x560306943000, 4096, PROT_READ <unfinished ...>
+58624 newfstatat(3, "",  <unfinished ...>
+58622 mmap(0x7f7403f50000, 344064, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1c0000 <unfinished ...>
+58624 <... newfstatat resumed>{st_mode=S_IFREG|0644, st_size=2215936, ...}, AT_EMPTY_PATH) = 0
+58623 <... mprotect resumed>)           = 0
+58621 mmap(0x7fceb308f000, 52400, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0 <unfinished ...>
+58624 mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0 <unfinished ...>
+58622 <... mmap resumed>)               = 0x7f7403f50000
+58623 mprotect(0x7f04b4725000, 8192, PROT_READ <unfinished ...>
+58624 <... mmap resumed>)               = 0x7f42c2e05000
+58622 mmap(0x7f7403fa5000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x214000 <unfinished ...>
+58621 <... mmap resumed>)               = 0x7fceb308f000
+58624 pread64(3,  <unfinished ...>
+58623 <... mprotect resumed>)           = 0
+58622 <... mmap resumed>)               = 0x7f7403fa5000
+58624 <... pread64 resumed>"\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+58621 close(3 <unfinished ...>
+58624 mmap(NULL, 2260144, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0 <unfinished ...>
+58623 prlimit64(0, RLIMIT_STACK, NULL,  <unfinished ...>
+58622 mmap(0x7f7403fab000, 52400, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0 <unfinished ...>
+58621 <... close resumed>)              = 0
+58624 <... mmap resumed>)               = 0x7f42c2bdd000
+58623 <... prlimit64 resumed>{rlim_cur=8192*1024, rlim_max=RLIM64_INFINITY}) = 0
+58622 <... mmap resumed>)               = 0x7f7403fab000
+58624 mprotect(0x7f42c2c09000, 2002944, PROT_NONE <unfinished ...>
+58621 mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0 <unfinished ...>
+58624 <... mprotect resumed>)           = 0
+58623 munmap(0x7f04b46df000, 76645 <unfinished ...>
+58622 close(3 <unfinished ...>
+58624 mmap(0x7f42c2c09000, 1654784, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x2c000 <unfinished ...>
+58621 <... mmap resumed>)               = 0x7fceb2e72000
+58624 <... mmap resumed>)               = 0x7f42c2c09000
+58623 <... munmap resumed>)             = 0
+58622 <... close resumed>)              = 0
+58624 mmap(0x7f42c2d9d000, 344064, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1c0000 <unfinished ...>
+58621 arch_prctl(ARCH_SET_FS, 0x7fceb309d5c0 <unfinished ...>
+58624 <... mmap resumed>)               = 0x7f42c2d9d000
+58623 mq_open("mq_0", O_RDWR <unfinished ...>
+58622 mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0 <unfinished ...>
+58621 <... arch_prctl resumed>)         = 0
+58624 mmap(0x7f42c2df2000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x214000 <unfinished ...>
+58623 <... mq_open resumed>)            = 3
+58622 <... mmap resumed>)               = 0x7f7403d8e000
+58621 set_tid_address(0x7fceb309d890 <unfinished ...>
+58624 <... mmap resumed>)               = 0x7f42c2df2000
+58622 arch_prctl(ARCH_SET_FS, 0x7f7403fb95c0 <unfinished ...>
+58621 <... set_tid_address resumed>)    = 58621
+58624 mmap(0x7f42c2df8000, 52400, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0 <unfinished ...>
+58623 newfstatat(1, "",  <unfinished ...>
+58622 <... arch_prctl resumed>)         = 0
+58621 set_robust_list(0x7fceb309d8a0, 24 <unfinished ...>
+58624 <... mmap resumed>)               = 0x7f42c2df8000
+58623 <... newfstatat resumed>{st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0x1), ...}, AT_EMPTY_PATH) = 0
+58621 <... set_robust_list resumed>)    = 0
+58624 close(3 <unfinished ...>
+58623 getrandom( <unfinished ...>
+58624 <... close resumed>)              = 0
+58622 set_tid_address(0x7f7403fb9890 <unfinished ...>
+58624 mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0 <unfinished ...>
+58623 <... getrandom resumed>"\x33\xe6\x6c\xef\x6d\xb2\xa4\xa5", 8, GRND_NONBLOCK) = 8
+58621 mprotect(0x7fceb3089000, 12288, PROT_READ <unfinished ...>
+58624 <... mmap resumed>)               = 0x7f42c2bdb000
+58623 brk(NULL <unfinished ...>
+58622 <... set_tid_address resumed>)    = 58622
+58624 arch_prctl(ARCH_SET_FS, 0x7f42c2e065c0 <unfinished ...>
+58623 <... brk resumed>)                = 0x560307be4000
+58621 <... mprotect resumed>)           = 0
+58622 set_robust_list(0x7f7403fb98a0, 24 <unfinished ...>
+58624 <... arch_prctl resumed>)         = 0
+58623 brk(0x560307c05000 <unfinished ...>
+58624 set_tid_address(0x7f42c2e06890 <unfinished ...>
+58622 <... set_robust_list resumed>)    = 0
+58621 mprotect(0x55e4ed938000, 4096, PROT_READ <unfinished ...>
+58624 <... set_tid_address resumed>)    = 58624
+58623 <... brk resumed>)                = 0x560307c05000
+58624 set_robust_list(0x7f42c2e068a0, 24 <unfinished ...>
+58621 <... mprotect resumed>)           = 0
+58624 <... set_robust_list resumed>)    = 0
+58623 write(1, "Mande /mq_0 - 0\n", 16 <unfinished ...>
+58622 mprotect(0x7f7403fa5000, 12288, PROT_READ <unfinished ...>
+58621 mprotect(0x7fceb30e4000, 8192, PROT_READ <unfinished ...>
+58623 <... write resumed>)              = 16
+58622 <... mprotect resumed>)           = 0
+58621 <... mprotect resumed>)           = 0
+58624 mprotect(0x7f42c2df2000, 12288, PROT_READ <unfinished ...>
+58622 mprotect(0x56094e8a5000, 4096, PROT_READ <unfinished ...>
+58624 <... mprotect resumed>)           = 0
+58621 prlimit64(0, RLIMIT_STACK, NULL,  <unfinished ...>
+58624 mprotect(0x5591acdb0000, 4096, PROT_READ <unfinished ...>
+58622 <... mprotect resumed>)           = 0
+58624 <... mprotect resumed>)           = 0
+58621 <... prlimit64 resumed>{rlim_cur=8192*1024, rlim_max=RLIM64_INFINITY}) = 0
+58624 mprotect(0x7f42c2e4d000, 8192, PROT_READ <unfinished ...>
+58622 mprotect(0x7f7404000000, 8192, PROT_READ <unfinished ...>
+58624 <... mprotect resumed>)           = 0
+58621 munmap(0x7fceb309e000, 76645 <unfinished ...>
+58622 <... mprotect resumed>)           = 0
+58624 prlimit64(0, RLIMIT_STACK, NULL,  <unfinished ...>
+58621 <... munmap resumed>)             = 0
+58624 <... prlimit64 resumed>{rlim_cur=8192*1024, rlim_max=RLIM64_INFINITY}) = 0
+58622 prlimit64(0, RLIMIT_STACK, NULL,  <unfinished ...>
+58624 munmap(0x7f42c2e07000, 76645 <unfinished ...>
+58621 mq_open("mq_0", O_RDWR|O_CREAT|O_EXCL, 0600, {mq_flags=0xc0000, mq_maxmsg=10, mq_msgsize=64, mq_curmsgs=-1} <unfinished ...>
+58622 <... prlimit64 resumed>{rlim_cur=8192*1024, rlim_max=RLIM64_INFINITY}) = 0
+58624 <... munmap resumed>)             = 0
+58621 <... mq_open resumed>)            = -1 EEXIST (File exists)
+58622 munmap(0x7f7403fba000, 76645 <unfinished ...>
+58624 mq_open("mq_1", O_RDWR <unfinished ...>
+58621 dup(2 <unfinished ...>
+58624 <... mq_open resumed>)            = 3
+58622 <... munmap resumed>)             = 0
+58621 <... dup resumed>)                = 3
+58624 newfstatat(1, "",  <unfinished ...>
+58621 fcntl(3, F_GETFL <unfinished ...>
+58624 <... newfstatat resumed>{st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0x1), ...}, AT_EMPTY_PATH) = 0
+58622 mq_open("mq_1", O_RDWR|O_CREAT|O_EXCL, 0600, {mq_flags=0xc0000, mq_maxmsg=10, mq_msgsize=64, mq_curmsgs=-1} <unfinished ...>
+58624 getrandom( <unfinished ...>
+58621 <... fcntl resumed>)              = 0x80402 (flags O_RDWR|O_APPEND|O_CLOEXEC)
+58624 <... getrandom resumed>"\x8f\x7e\xe6\x75\xe9\xd4\x87\x22", 8, GRND_NONBLOCK) = 8
+58622 <... mq_open resumed>)            = -1 EEXIST (File exists)
+58624 brk(NULL <unfinished ...>
+58621 getrandom( <unfinished ...>
+58624 <... brk resumed>)                = 0x5591ad611000
+58622 dup(2 <unfinished ...>
+58624 brk(0x5591ad632000 <unfinished ...>
+58621 <... getrandom resumed>"\x0c\x03\x4d\x28\x55\x31\x80\xb1", 8, GRND_NONBLOCK) = 8
+58624 <... brk resumed>)                = 0x5591ad632000
+58622 <... dup resumed>)                = 3
+58621 brk(NULL <unfinished ...>
+58624 write(1, "Mande /mq_1 - 0\n", 16 <unfinished ...>
+58622 fcntl(3, F_GETFL <unfinished ...>
+58621 <... brk resumed>)                = 0x55e4eebad000
+58624 <... write resumed>)              = 16
+58623 mq_timedsend(3, "/mq_0 - 0\0", 10, 0, NULL <unfinished ...>
+58622 <... fcntl resumed>)              = 0x80402 (flags O_RDWR|O_APPEND|O_CLOEXEC)
+58621 brk(0x55e4eebce000 <unfinished ...>
+58624 mq_timedsend(3, "/mq_1 - 0\0", 10, 0, NULL <unfinished ...>
+58623 <... mq_timedsend resumed>)       = 0
+58622 getrandom( <unfinished ...>
+58624 <... mq_timedsend resumed>)       = 0
+58623 write(1, "Mande /mq_0 - 1\n", 16 <unfinished ...>
+58621 <... brk resumed>)                = 0x55e4eebce000
+58624 write(1, "Mande /mq_1 - 1\n", 16 <unfinished ...>
+58623 <... write resumed>)              = 16
+58622 <... getrandom resumed>"\x69\x05\x1e\x26\xb1\x39\x0e\xe7", 8, GRND_NONBLOCK) = 8
+58624 <... write resumed>)              = 16
+58623 mq_timedsend(3, "/mq_0 - 1\0", 10, 1, NULL <unfinished ...>
+58621 newfstatat(3, "",  <unfinished ...>
+58624 mq_timedsend(3, "/mq_1 - 1\0", 10, 1, NULL <unfinished ...>
+58623 <... mq_timedsend resumed>)       = 0
+58622 brk(NULL <unfinished ...>
+58624 <... mq_timedsend resumed>)       = 0
+58623 write(1, "Mande /mq_0 - 2\n", 16 <unfinished ...>
+58621 <... newfstatat resumed>{st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0x1), ...}, AT_EMPTY_PATH) = 0
+58624 write(1, "Mande /mq_1 - 2\n", 16 <unfinished ...>
+58623 <... write resumed>)              = 16
+58622 <... brk resumed>)                = 0x56094fffa000
+58624 <... write resumed>)              = 16
+58623 mq_timedsend(3, "/mq_0 - 2\0", 10, 2, NULL <unfinished ...>
+58621 write(3, "Error en mq_open: File exists\n", 30 <unfinished ...>
+58624 mq_timedsend(3, "/mq_1 - 2\0", 10, 2, NULL <unfinished ...>
+58623 <... mq_timedsend resumed>)       = 0
+58622 brk(0x56095001b000 <unfinished ...>
+58624 <... mq_timedsend resumed>)       = 0
+58623 write(1, "Mande /mq_0 - 3\n", 16 <unfinished ...>
+58621 <... write resumed>)              = 30
+58624 write(1, "Mande /mq_1 - 3\n", 16 <unfinished ...>
+58623 <... write resumed>)              = 16
+58622 <... brk resumed>)                = 0x56095001b000
+58624 <... write resumed>)              = 16
+58623 mq_timedsend(3, "/mq_0 - 3\0", 10, 3, NULL <unfinished ...>
+58621 close(3 <unfinished ...>
+58624 mq_timedsend(3, "/mq_1 - 3\0", 10, 3, NULL <unfinished ...>
+58623 <... mq_timedsend resumed>)       = 0
+58622 newfstatat(3, "",  <unfinished ...>
+58621 <... close resumed>)              = 0
+58624 <... mq_timedsend resumed>)       = 0
+58623 write(1, "Mande /mq_0 - 4\n", 16 <unfinished ...>
+58622 <... newfstatat resumed>{st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0x1), ...}, AT_EMPTY_PATH) = 0
+58624 write(1, "Mande /mq_1 - 4\n", 16 <unfinished ...>
+58623 <... write resumed>)              = 16
+58621 exit_group(-1 <unfinished ...>
+58624 <... write resumed>)              = 16
+58623 mq_timedsend(3, "/mq_0 - 4\0", 10, 4, NULL <unfinished ...>
+58622 write(3, "Error en mq_open: File exists\n", 30 <unfinished ...>
+58624 mq_timedsend(3, "/mq_1 - 4\0", 10, 4, NULL <unfinished ...>
+58623 <... mq_timedsend resumed>)       = 0
+58621 <... exit_group resumed>)         = ?
+58624 <... mq_timedsend resumed>)       = 0
+58623 close(3 <unfinished ...>
+58622 <... write resumed>)              = 30
+58624 close(3 <unfinished ...>
+58623 <... close resumed>)              = 0
+58624 <... close resumed>)              = 0
+58622 close(3 <unfinished ...>
+58624 exit_group(0 <unfinished ...>
+58623 exit_group(0 <unfinished ...>
+58624 <... exit_group resumed>)         = ?
+58622 <... close resumed>)              = 0
+58621 +++ exited with 255 +++
+58623 <... exit_group resumed>)         = ?
+58620 <... clock_nanosleep resumed>{tv_sec=4, tv_nsec=992610083}) = ? ERESTART_RESTARTBLOCK (Interrupted by signal)
+58622 exit_group(-1 <unfinished ...>
+58620 --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=58621, si_uid=1000, si_status=255, si_utime=0, si_stime=1} ---
+58622 <... exit_group resumed>)         = ?
+58620 restart_syscall(<... resuming interrupted clock_nanosleep ...> <unfinished ...>
+58624 +++ exited with 0 +++
+58620 <... restart_syscall resumed>)    = ? ERESTART_RESTARTBLOCK (Interrupted by signal)
+58620 --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=58624, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
+58623 +++ exited with 0 +++
+58620 --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=58623, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
+58622 +++ exited with 255 +++
+58620 --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=58622, si_uid=1000, si_status=255, si_utime=0, si_stime=0} ---
+58620 restart_syscall(<... resuming interrupted restart_syscall ...>) = 0
+58620 mq_open("mq_1", O_RDWR)           = 3
+58620 mq_timedreceive(3, 0x7fff732fc910, 32, NULL, NULL) = -1 EMSGSIZE (Message too long)
+58620 dup(2)                            = 4
+58620 fcntl(4, F_GETFL)                 = 0x80402 (flags O_RDWR|O_APPEND|O_CLOEXEC)
+58620 getrandom("\x84\x81\x1e\xcb\xec\x3b\x29\x43", 8, GRND_NONBLOCK) = 8
+58620 brk(NULL)                         = 0x55d59d614000
+58620 brk(0x55d59d635000)               = 0x55d59d635000
+58620 newfstatat(4, "", {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0x1), ...}, AT_EMPTY_PATH) = 0
+58620 write(4, "Error mq_recieve: Message too lo"..., 35) = 35
+58620 close(4)                          = 0
+58620 newfstatat(1, "", {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0x1), ...}, AT_EMPTY_PATH) = 0
+58620 write(1, "Recibidos -1 - message #0 -> \n", 30) = 30
+58620 mq_timedreceive(3, 0x7fff732fc910, 32, NULL, NULL) = -1 EMSGSIZE (Message too long)
+58620 dup(2)                            = 4
+58620 fcntl(4, F_GETFL)                 = 0x80402 (flags O_RDWR|O_APPEND|O_CLOEXEC)
+58620 newfstatat(4, "", {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0x1), ...}, AT_EMPTY_PATH) = 0
+58620 write(4, "Error mq_recieve: Message too lo"..., 35) = 35
+58620 close(4)                          = 0
+58620 write(1, "Recibidos -1 - message #1 -> \n", 30) = 30
+58620 mq_timedreceive(3, 0x7fff732fc910, 32, NULL, NULL) = -1 EMSGSIZE (Message too long)
+58620 dup(2)                            = 4
+58620 fcntl(4, F_GETFL)                 = 0x80402 (flags O_RDWR|O_APPEND|O_CLOEXEC)
+58620 newfstatat(4, "", {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0x1), ...}, AT_EMPTY_PATH) = 0
+58620 write(4, "Error mq_recieve: Message too lo"..., 35) = 35
+58620 close(4)                          = 0
+58620 write(1, "Recibidos -1 - message #2 -> \n", 30) = 30
+58620 mq_timedreceive(3, 0x7fff732fc910, 32, NULL, NULL) = -1 EMSGSIZE (Message too long)
+58620 dup(2)                            = 4
+58620 fcntl(4, F_GETFL)                 = 0x80402 (flags O_RDWR|O_APPEND|O_CLOEXEC)
+58620 newfstatat(4, "", {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0x1), ...}, AT_EMPTY_PATH) = 0
+58620 write(4, "Error mq_recieve: Message too lo"..., 35) = 35
+58620 close(4)                          = 0
+58620 write(1, "Recibidos -1 - message #3 -> \n", 30) = 30
+58620 mq_timedreceive(3, 0x7fff732fc910, 32, NULL, NULL) = -1 EMSGSIZE (Message too long)
+58620 dup(2)                            = 4
+58620 fcntl(4, F_GETFL)                 = 0x80402 (flags O_RDWR|O_APPEND|O_CLOEXEC)
+58620 newfstatat(4, "", {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0x1), ...}, AT_EMPTY_PATH) = 0
+58620 write(4, "Error mq_recieve: Message too lo"..., 35) = 35
+58620 close(4)                          = 0
+58620 write(1, "Recibidos -1 - message #4 -> \n", 30) = 30
+58620 mq_timedreceive(3, 0x7fff732fc910, 32, NULL, NULL) = -1 EMSGSIZE (Message too long)
+58620 dup(2)                            = 4
+58620 fcntl(4, F_GETFL)                 = 0x80402 (flags O_RDWR|O_APPEND|O_CLOEXEC)
+58620 newfstatat(4, "", {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0x1), ...}, AT_EMPTY_PATH) = 0
+58620 write(4, "Error mq_recieve: Message too lo"..., 35) = 35
+58620 close(4)                          = 0
+58620 write(1, "Recibidos -1 - message #5 -> \n", 30) = 30
+58620 mq_timedreceive(3, 0x7fff732fc910, 32, NULL, NULL) = -1 EMSGSIZE (Message too long)
+58620 dup(2)                            = 4
+58620 fcntl(4, F_GETFL)                 = 0x80402 (flags O_RDWR|O_APPEND|O_CLOEXEC)
+58620 newfstatat(4, "", {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0x1), ...}, AT_EMPTY_PATH) = 0
+58620 write(4, "Error mq_recieve: Message too lo"..., 35) = 35
+58620 close(4)                          = 0
+58620 write(1, "Recibidos -1 - message #6 -> \n", 30) = 30
+58620 mq_timedreceive(3, 0x7fff732fc910, 32, NULL, NULL) = -1 EMSGSIZE (Message too long)
+58620 dup(2)                            = 4
+58620 fcntl(4, F_GETFL)                 = 0x80402 (flags O_RDWR|O_APPEND|O_CLOEXEC)
+58620 newfstatat(4, "", {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0x1), ...}, AT_EMPTY_PATH) = 0
+58620 write(4, "Error mq_recieve: Message too lo"..., 35) = 35
+58620 close(4)                          = 0
+58620 write(1, "Recibidos -1 - message #7 -> \n", 30) = 30
+58620 mq_timedreceive(3, 0x7fff732fc910, 32, NULL, NULL) = -1 EMSGSIZE (Message too long)
+58620 dup(2)                            = 4
+58620 fcntl(4, F_GETFL)                 = 0x80402 (flags O_RDWR|O_APPEND|O_CLOEXEC)
+58620 newfstatat(4, "", {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0x1), ...}, AT_EMPTY_PATH) = 0
+58620 write(4, "Error mq_recieve: Message too lo"..., 35) = 35
+58620 close(4)                          = 0
+58620 write(1, "Recibidos -1 - message #8 -> \n", 30) = 30
+58620 mq_timedreceive(3, 0x7fff732fc910, 32, NULL, NULL) = -1 EMSGSIZE (Message too long)
+58620 dup(2)                            = 4
+58620 fcntl(4, F_GETFL)                 = 0x80402 (flags O_RDWR|O_APPEND|O_CLOEXEC)
+58620 newfstatat(4, "", {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0x1), ...}, AT_EMPTY_PATH) = 0
+58620 write(4, "Error mq_recieve: Message too lo"..., 35) = 35
+58620 close(4)                          = 0
+58620 write(1, "Recibidos -1 - message #9 -> \n", 30) = 30
+58620 close(3)                          = 0
+58620 mq_unlink("mq_0")                 = 0
+58620 mq_unlink("mq_1")                 = 0
+58620 exit_group(0)                     = ?
+58620 +++ exited with 0 +++

@@ -151,56 +151,6 @@ void parent(int *rPipe, int* wPipe){
 
 		n_fd = select(rPipe[0]+1, &rfds, NULL, NULL, &tv);
 
-		// if(n_fd == -1){
-        //     perror("select()");
-        //     exit(EXIT_FAILURE);
-        // }
-
-		// if(n_fd){
-		// 	if(FD_ISSET(STDIN_FILENO, &rfds)){
-		// 		if( (rd1 = read(STDIN_FILENO, send, BUFFER_SZ)) == -1){
-        //             perror("Father read from stdin");
-		// 			exit(EXIT_FAILURE);
-		// 		}
-		// 		if(rd1 > 0){
-		// 			if(write(wPipe[1], send, rd1) == -1){
-        //                 perror("Parent write to child");
-		// 				exit(EXIT_FAILURE);
-		// 			}
-		// 			if(close(wPipe[1]) == -1){
-        //                 perror("Parent close wPipe[1]:");
-		// 				exit(EXIT_FAILURE);
-		// 			}
-		// 			flag_stdin = 0;
-		// 		}
-		// 		break;
-		// 	}
-		// 	if(FD_ISSET(rPipe[0], &rfds)){
-		// 		if( (rd2 = read(rPipe[0], receive, BUFFER_SZ)) == -1){
-        //             perror("Parent read from stdin");
-		// 			exit(EXIT_FAILURE);
-		// 		}
-		// 		// buffer[retval] = '\0';
-		// 		if(rd2 > 0){
-		// 			if(close(rPipe[0]) == -1){
-        //                 perror("Close error:");
-		// 				exit(EXIT_FAILURE);
-		// 			}
-		// 			if(write(STDOUT_FILENO, receive, rd2) == -1){
-        //                 perror("Father write to wPipe[1]");
-		// 				exit(EXIT_FAILURE);
-		// 			}
-		// 			flag_pipe = 0;
-		// 		}
-		// 		// break;
-		// 	}
-		// }else{
-		// 	puts("No data within five seconds.");
-		// 	// break;
-		// }
-		// if(!flag_pipe){
-		// 	break;
-		// }
 
 		switch (n_fd){
 			case -1:

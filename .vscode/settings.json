@@ -1,0 +1,26 @@
+{
+	"files.associations": {
+		"types.h": "c",
+		"stdlib.h": "c",
+		"errno.h": "c",
+		"errno-base.h": "c",
+		"string.h": "c",
+		"features.h": "c",
+		"cstdio": "c",
+		"assert.h": "c",
+		"signal.h": "c",
+		"fcntl.h": "c",
+		"unistd.h": "c",
+		"wait.h": "c",
+		"siginfo-consts.h": "c",
+		"sigevent-consts.h": "c",
+		"mman.h": "c",
+		"semaphore": "cpp",
+		"queque.h": "c",
+		"stdio.h": "c",
+		"semaphore.h": "c",
+		"ratio": "c",
+		"stat.h": "c",
+		"mqueue.h": "c"
+	}
+}

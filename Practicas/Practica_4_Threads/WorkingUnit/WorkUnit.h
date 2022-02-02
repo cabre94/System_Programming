@@ -33,6 +33,7 @@ typedef struct{
     WorkUnit_t units[Q_SZ];
     unsigned int idx_put;
     unsigned int idx_get;
+	unsigned long size;
 } Queue_t;
 
 typedef struct{

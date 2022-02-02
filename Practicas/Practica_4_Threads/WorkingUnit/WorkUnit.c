@@ -14,6 +14,7 @@
 int QueueInit(Queue_t *pQ){
 	pQ->idx_put = 0;
 	pQ->idx_get = 0;
+	pQ->size 	= 0;
 
 	int error_id;
 
@@ -72,6 +73,7 @@ int QueuePut(Queue_t *pQ, WorkUnit_t* w_unit){
 
 	pQ->units[pQ->idx_put % Q_SZ] = *w_unit;
 	pQ->idx_put++;
+	pQ->size++;
 
 	// Mando señal de que se pueden sacar cosas
 	if ((error_id = pthread_cond_signal(&(pQ->get_ready))) != 0){
@@ -102,6 +104,7 @@ int QueueGet(Queue_t *pQ, WorkUnit_t* w_unit){
 
 	*w_unit = pQ->units[pQ->idx_get % Q_SZ];	// Guardo el coso
 	pQ->idx_get++;
+	pQ->size--;
 
 	// Mando señal de que hay lugar por si alguien esta esperando
 	if ((error_id = pthread_cond_signal(&(pQ->put_ready))) != 0){
@@ -118,9 +121,9 @@ int QueueGet(Queue_t *pQ, WorkUnit_t* w_unit){
 
 // Toda un tarde revisando el codigo porque no me funcionaba por esta funcion del orto.
 // Aca no hay que tomar el mtex porque cuando llamamos a esta funcion en put y get
-// ya esta tomado
+// ya esta tomado. Termine poniendo un segundo atributo con el size
 unsigned long QueueSize(Queue_t *pQ){
-	return  pQ->idx_put - pQ->idx_get;
+	return  pQ->size;
 }
 
 

@@ -18,7 +18,7 @@ int QueueInit(Queue_t *pQ){
 
 	int error_id;
 
-	if((error_id = pthread_mutex_init(&pQ->mtx_sync, NULL)) != 0){
+	if((error_id = pthread_mutex_init(&(pQ->mtx_sync), NULL)) != 0){
 		return error_id;
 	}
 
@@ -35,6 +35,8 @@ int QueueInit(Queue_t *pQ){
 
 	return 0;
 }
+
+
 
 // Desstruye el contenedor, liberando recursos
 int QueueDestroy(Queue_t *pQ){
@@ -58,12 +60,17 @@ int QueuePut(Queue_t *pQ, WorkUnit_t* w_unit){
 	int error_id;
 
 	// tomo el mutex
-	if( (error_id = pthread_mutex_lock(&pQ->mtx_sync)) != 0 ){
+	printf("en put(): trato de lockear el mutex\n");
+	// pthread_mutex_lock(&(pQ->mtx_sync));
+	if( (error_id = pthread_mutex_lock(&(pQ->mtx_sync))) != 0 ){
+		printf("Error?\n");
 		return error_id;
 	}
+	printf("en put(): tengo el mutex\n");
 
 	// espero a que la cola tenga lugar
-	while(QueueSize(pQ) != Q_SZ){
+	printf("en put\n");
+	while(QueueSize(pQ) == Q_SZ){
 		pthread_cond_wait(&pQ->put_ready, &pQ->mtx_sync);
 	}
 
@@ -197,10 +204,11 @@ void* thread_fun(void* arg){
 }
 
 // TODO me falta manejar bien los errores aca
-int WorkServer_init(WorkServer_t *pWServer, int unique_Queue){
+int workServer_init(WorkServer_t *pWServer, int unique_Queue){
 	printf("Inicializo Server con %d threads\n", NUM_WORKER_THREADS);
 
 	pWServer->unique_Queue = unique_Queue;
+	pWServer->idx_submit = 0;
 
 	pWServer->pMonitor = (StatMonitor_t *) malloc(sizeof(StatMonitor_t));
 	statMonitor_init(pWServer->pMonitor);
@@ -215,6 +223,7 @@ int WorkServer_init(WorkServer_t *pWServer, int unique_Queue){
 			workerThread_init(&pWServer->workers[i], i, pWServer->pQueue, pWServer->pMonitor);
 		}
 	}else{				// Una queque por cada thread
+		assert(0);
 		// printf("Sin implementar :D\n");
 		// assert(0);
 		pWServer->pQueue = (Queue_t *) malloc(NUM_WORKER_THREADS*sizeof(Queue_t));
@@ -224,13 +233,14 @@ int WorkServer_init(WorkServer_t *pWServer, int unique_Queue){
 		}
 	}
 
+	printf("Termino Server_init\n");
 	return 0;
 
 	// Tengo que allocar el servidor y la cola 
 }
 
 // Chequear si puedo usar var local
-int WorkServer_destroy(WorkServer_t *pWServer){
+int workServer_destroy(WorkServer_t *pWServer){
 	// Creo un workUnit auxiliar para liquidar el thread
 	// NO se si hace falta allocar o podria ser var local
 	WorkUnit_t *end_WUnit = malloc(sizeof(WorkUnit_t));
@@ -240,13 +250,14 @@ int WorkServer_destroy(WorkServer_t *pWServer){
 		// mando igual que la cantidad de threads, van a terminar
 		// en vez de mandar sobre la cola del server lo mando sobre la
 		// cola de cada worker (que puede ser la misma) para hacerlo mas generico
-		QueuePut(&(pWServer->workers[i].pQueue), end_WUnit);
+		QueuePut(pWServer->workers[i].pQueue, end_WUnit);
+		// QueuePut(&(pWServer->pQueue[i]), end_WUnit);
 	}
 
 	// Hay que esperar que cada thread termine
 	for (int i = 0; i < NUM_WORKER_THREADS; i++){
 		pthread_join(pWServer->workers[i].thr, NULL);
-		printf("Thread %d joined\n", pWServer->workers[i].id);
+		printf("Thread %ld joined\n", pWServer->workers[i].id);
 	}
 
 	// Imprimo las stats para comparar despues las dos modalidades
@@ -266,25 +277,64 @@ int WorkServer_destroy(WorkServer_t *pWServer){
 	free(pWServer->pQueue);
 	free(pWServer->pMonitor);
 	free(end_WUnit);
+
+	return 0;
 }
 
-int WorkServer_submit(WorkServer_t *pWServer, WorkUnit_t *pWUnit);
+int workServer_submit(WorkServer_t *pWServer, WorkUnit_t *pWUnit){
+	pWUnit->stats.submitTime = time(NULL);
+	// Hay que manejar las excepciones, pero quiero terminarlo
+	// if(pWServer->unique_Queue){
+	// 	QueuePut(pWServer->pQueue, pWUnit);
+	// }else{
+	// 	QueuePut(pWServer->workers[pWServer->idx_submit].pQueue, pWUnit);
+	// 	pWServer->idx_submit = (pWServer->idx_submit+1) % NUM_WORKER_THREADS;
+	// }
+	printf("workServer_submit put en queue\n");
+	QueuePut(pWServer->pQueue, pWUnit);
+	printf("workServer_submit termino put\n");
+
+	return 0;
+}
 
 // ------------------------------- FakeWorkUnitGen_t
 void fake_func(void* context){
 	long id = (long) context;
 	int sTime = rand() % 5;
 	printf("In thread %ld: fake_func \"working\" during %d sec.", id, sTime);
-	sleep(sTime);
+	sleep(1);
+	// sleep(sTime);
 }
 
-void fakeWorkUnitGen_init(FakeWorkUnitGen_t *fake_gen, ProcFunc_t fake_fun){
-	fake_gen->fake_fun = fake_fun;
+void fakeWorkUnitGen_init(FakeWorkUnitGen_t *pFWUGen, ProcFunc_t fake_fun){
+	pFWUGen->fake_fun = fake_fun;
+	pFWUGen->total_calls = 0;
 }
 
-void fakeGenerator_use(WorkServer_t *server){
-	//
+
+void fakeWorkUnitGen_use(FakeWorkUnitGen_t *pFWUGen, WorkServer_t *pWServer, int num_calls){	
+	
+	printf("En fakeWorkUnitGen_use()\n");
+	WorkUnit_t WUnit;
+	for (long i = 0; i < num_calls; i++){
+		printf("start for iteration\n");
+		
+		workUnit_init(&WUnit, pFWUGen->total_calls, (void*) pFWUGen->total_calls, pFWUGen->fake_fun);
+		printf("En fakeWorkUnitGen_use(), termino workUnit_init\n");
+        
+
+		workServer_submit(pWServer, &WUnit);
+		printf("En fakeWorkUnitGen_use(), termino workServer_submit\n");
+		
+		pFWUGen->total_calls++;
+		printf("fin for iteration\n");
+    }
+	printf("Termino fakeWorkUnitGen_use()\n");
+
+	// No se si deberia allocar
 }
+
+
 
 
 // ------------------------------- StatMonitor_t
@@ -356,6 +406,25 @@ int statMonitor_destroy(StatMonitor_t *stat_monitor){
 
 // ------------------------------- main
 int main(){
+
+	WorkServer_t workServer;
+	FakeWorkUnitGen_t fakeGenerator;
+
+	workServer_init(&workServer, 1);
+	// WorkServer_init(&workServer, 0);
+
+	fakeWorkUnitGen_init(&fakeGenerator, fake_func);
+
+	fakeWorkUnitGen_use(&fakeGenerator, &workServer, 10);
+	printf("En main(), termino fakeWorkUnitGen_use\n");
+	// printf("Main(): sleep 10 sec\n");
+	// sleep(10);
+	
+	// printf("Main(): Mando otros 10 trabajos\n");
+	// fakeWorkUnitGen_use(&fakeGenerator, &workServer, 50);
+
+	workServer_destroy(&workServer);
+
 	return 0;
 
 }

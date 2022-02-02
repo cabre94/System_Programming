@@ -6,7 +6,7 @@
 #include <pthread.h>
 #include <time.h>
 
-#define NUM_WORKER_THREADS 10
+#define NUM_WORKER_THREADS 5
 #define Q_SZ 10
 
 
@@ -31,12 +31,13 @@ typedef struct{
     pthread_cond_t  get_ready;		// cant. de entradas libres
     pthread_cond_t 	put_ready;		// condicion para hacer put en la queue
     WorkUnit_t units[Q_SZ];
-    unsigned long idx_put;
-    unsigned long idx_get;
+    unsigned int idx_put;
+    unsigned int idx_get;
 } Queue_t;
 
 typedef struct{
 	// ¿?
+	long total_calls;
 	ProcFunc_t fake_fun;
 } FakeWorkUnitGen_t;
 
@@ -60,6 +61,7 @@ typedef struct{
 
 typedef struct{
 	int unique_Queue;
+	int idx_submit;
 	WorkerThread_t workers[NUM_WORKER_THREADS];
 
 	Queue_t *pQueue;	// Para el caso a, donde hay una unica cola
@@ -109,7 +111,7 @@ void fake_func(void* context);
 
 void fakeWorkUnitGen_init(FakeWorkUnitGen_t *fake_gen, ProcFunc_t fake_fun);
 
-void fakeGenerator_use(WorkServer_t *server);
+void fakeWorkUnitGen_use(FakeWorkUnitGen_t *pFWUGen, WorkServer_t *pWServer, int num_calls);
 
 // ------------------------------- StatMonitor_t
 int statMonitor_init(StatMonitor_t *stat_monitor);

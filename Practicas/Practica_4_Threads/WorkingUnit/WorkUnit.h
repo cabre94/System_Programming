@@ -59,6 +59,7 @@ typedef struct{
 } WorkerThread_t;
 
 typedef struct{
+	int unique_Queue;
 	WorkerThread_t workers[NUM_WORKER_THREADS];
 
 	Queue_t *pQueue;	// Para el caso a, donde hay una unica cola
@@ -83,34 +84,41 @@ unsigned long QueueSize(Queue_t *pQ);
 
 // ------------------------------- WorkUnitStat_t
 // Inicializa WorkUnitStat_t con todos ceros
-void init_WorkUnitStat(WorkUnitStat_t* pWUS);
+void WorkUnitStat_init(WorkUnitStat_t* pWUS);
 
 
 // ------------------------------- WorkUnit_t
 // Inicializa WorkUnit_t
-void WorkUnitInit(WorkUnit_t *pWU, WorkUnitId id, void *context, ProcFunc_t fun);
+void workUnit_init(WorkUnit_t *pWU, WorkUnitId id, void *context, ProcFunc_t fun);
 
 // ------------------------------- WorkerThread_t
-int init_WorkerThread(WorkerThread_t *pWT, long id, Queue_t *pQueue, StatMonitor_t *pSMonitor);
+int workerThread_init(WorkerThread_t *pWT, long id, Queue_t *pQueue, StatMonitor_t *pSMonitor);
 
 // ------------------------------- WorkServer_t
 void* thread_fun(void* arg);
 
+int workServer_init(WorkServer_t *pWServer, int unique_Queue);
+// int WorkServer_init(WorkServer_t *pWServer);
+
+int workServer_destroy(WorkServer_t *pWServer);
+
+int workServer_submit(WorkServer_t *pWServer, WorkUnit_t *pWUnit);
+
 // ------------------------------- FakeWorkUnitGen_t
 void fake_func(void* context);
 
-void init_FakeWorkUnitGen(FakeWorkUnitGen_t *fake_gen, ProcFunc_t fake_fun);
+void fakeWorkUnitGen_init(FakeWorkUnitGen_t *fake_gen, ProcFunc_t fake_fun);
 
-void useFakeGenerator(WorkServer_t *server);
+void fakeGenerator_use(WorkServer_t *server);
 
 // ------------------------------- StatMonitor_t
-int init_StatMonitor(StatMonitor_t *stat_monitor);
+int statMonitor_init(StatMonitor_t *stat_monitor);
 
-int update_statMonitor(StatMonitor_t *stat_monitor, WorkUnitStat_t *stat);
+int statMonitor_update(StatMonitor_t *stat_monitor, WorkUnitStat_t *stat);
 
-int print_statMonitor(StatMonitor_t *stat_monitor);
+int statMonitor_print(StatMonitor_t *stat_monitor);
 
-int destroy_statMonitor(StatMonitor_t *stat_monitor);
+int statMonitor_destroy(StatMonitor_t *stat_monitor);
 
 
 

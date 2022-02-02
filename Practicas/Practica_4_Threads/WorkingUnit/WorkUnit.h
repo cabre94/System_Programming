@@ -36,20 +36,6 @@ typedef struct{
 } Queue_t;
 
 typedef struct{
-	pthread_t thr;
-	long id;
-
-	Queue_t *pQWorker;	// Para el caso b, donde cada thread tiene su cola
-} WorkerThread_t;
-
-typedef struct{
-	WorkerThread_t workers[NUM_WORKER_THREADS];
-
-	Queue_t *pQServer;	// Para el caso a, donde hay una unica cola
-} WorkServer_t;
-
-
-typedef struct{
 	// ¿?
 	ProcFunc_t fake_fun;
 } FakeWorkUnitGen_t;
@@ -64,6 +50,20 @@ typedef struct{
 } StatMonitor_t;
 
 
+typedef struct{
+	pthread_t thr;
+	long id;
+
+	Queue_t *pQueue;	// Para el caso b, donde cada thread tiene su cola
+	StatMonitor_t *pMonitor;
+} WorkerThread_t;
+
+typedef struct{
+	WorkerThread_t workers[NUM_WORKER_THREADS];
+
+	Queue_t *pQueue;	// Para el caso a, donde hay una unica cola
+	StatMonitor_t *pMonitor;
+} WorkServer_t;
 
 // ------------------------------- Queue_t
 // Inicializa (debe residir en un segmento de shared memory)
@@ -91,8 +91,10 @@ void init_WorkUnitStat(WorkUnitStat_t* pWUS);
 void WorkUnitInit(WorkUnit_t *pWU, WorkUnitId id, void *context, ProcFunc_t fun);
 
 // ------------------------------- WorkerThread_t
+int init_WorkerThread(WorkerThread_t *pWT, long id, Queue_t *pQueue, StatMonitor_t *pSMonitor);
 
 // ------------------------------- WorkServer_t
+void* thread_fun(void* arg);
 
 // ------------------------------- FakeWorkUnitGen_t
 void fake_func(void* context);
@@ -105,6 +107,10 @@ void useFakeGenerator(WorkServer_t *server);
 int init_StatMonitor(StatMonitor_t *stat_monitor);
 
 int update_statMonitor(StatMonitor_t *stat_monitor, WorkUnitStat_t *stat);
+
+int print_statMonitor(StatMonitor_t *stat_monitor);
+
+int destroy_statMonitor(StatMonitor_t *stat_monitor);
 
 
 

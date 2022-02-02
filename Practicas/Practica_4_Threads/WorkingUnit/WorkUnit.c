@@ -153,8 +153,48 @@ void WorkUnitInit(WorkUnit_t *pWU, WorkUnitId id, void *context, ProcFunc_t fun)
 	init_WorkUnitStat(&pWU->stats);
 }
 // ------------------------------- WorkerThread_t
+int init_WorkerThread(WorkerThread_t *pWT, long id, Queue_t *pQueue, StatMonitor_t *pSMonitor){
+	pWT->id = id;
+	pWT->pQueue = pQueue;
+	pWT->pMonitor = pSMonitor;
+
+	int error_id;
+	if( (error_id = pthread_create(&(pWT->thr), NULL, thread_fun, (void *) pWT)) != 0){
+		printf("Error creating thread: %d\n", error_id);
+		return -1;
+	}
+
+	return 0;
+}
+
 
 // ------------------------------- WorkServer_t
+void* thread_fun(void* arg){
+
+	WorkerThread_t *pWT = (WorkerThread_t *) arg;
+
+	WorkUnit_t w_unit;
+
+	while(1){
+		// Tomo una workUnit de la cola, el mismo workerThread sabe si es propia o no
+		QueueGet(pWT->pQueue, &w_unit);
+
+		if(w_unit.fun == NULL)
+			break;
+		
+		w_unit.stats.startProcTime 	= time(NULL);	// Medio pedorro
+		// Que la unidad haga lo que tenga que hacer
+		w_unit.fun(w_unit.context);					
+		w_unit.stats.endProcTime 	= time(NULL);	// Medio pedorro
+
+		// Se la mando al monitor para que actualice las estadisticas
+		update_statMonitor(pWT->pMonitor, &(w_unit.stats));
+	}
+
+	pthread_exit(NULL);
+	// Como costo esto dios
+}
+
 
 // ------------------------------- FakeWorkUnitGen_t
 void fake_func(void* context){
@@ -198,7 +238,7 @@ int update_statMonitor(StatMonitor_t *stat_monitor, WorkUnitStat_t *w_stat){
 
 	stat_monitor->n_WU++;		// una unidad mas en todo el proceso
 	stat_monitor->t_waiting += (w_stat->startProcTime  - w_stat->submitTime);
-	stat_monitor->t_proc += (w_stat->endProcTime - w_stat->startProcTime);
+	stat_monitor->t_proc 	+= (w_stat->endProcTime - w_stat->startProcTime);
 
 	// Largo el mutex
 	if( (error_id = pthread_mutex_unlock(&stat_monitor->access)) != 0){
@@ -209,6 +249,39 @@ int update_statMonitor(StatMonitor_t *stat_monitor, WorkUnitStat_t *w_stat){
 	return 0;
 }
 
+int print_statMonitor(StatMonitor_t *stat_monitor){
+	int error_id;
+	// Tomo el mutex
+	if( (error_id = pthread_mutex_lock(&stat_monitor->access)) != 0){
+		printf("stat mutex lock error: %d\n", error_id);
+		return -1;
+	}
+
+	printf("Unidades totales: %d\n", 			stat_monitor->n_WU);
+    printf("Tiempo promedio en espera: %f\n", 	(double) stat_monitor->t_waiting / stat_monitor->n_WU);
+    printf("Tiempo promedio procesando: %f\n", 	(double) stat_monitor->t_proc / stat_monitor->n_WU);
+
+	// Largo el mutex
+	if( (error_id = pthread_mutex_unlock(&stat_monitor->access)) != 0){
+		printf("stat mutex unlock error: %d\n", error_id);
+		return -1;
+	}
+
+	return 0;
+}
+
+int destroy_statMonitor(StatMonitor_t *stat_monitor){
+	int error_id;
+	if( (error_id = pthread_mutex_destroy(&stat_monitor->access)) != 0 ){
+		printf("stat mutex destroy error: %d\n", error_id);
+		return -1;
+	}
+	return 0;
+}
+
+
+// ------------------------------- main
 int main(){
+	return 0;
 
 }

@@ -165,6 +165,8 @@ int workerThread_init(WorkerThread_t *pWT, long id, Queue_t *pQueue, StatMonitor
 	pWT->pQueue = pQueue;
 	pWT->pMonitor = pSMonitor;
 
+	printf("Initializing thread %ld\n", id);
+
 	int error_id;
 	if( (error_id = pthread_create(&(pWT->thr), NULL, thread_fun, (void *) pWT)) != 0){
 		printf("Error creating thread: %d\n", error_id);

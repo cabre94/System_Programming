@@ -121,22 +121,7 @@ int QueueGet(Queue_t *pQ, WorkUnit_t* w_unit){
 
 // recupera la cantidad de elementos en la cola
 unsigned long QueueSize(Queue_t *pQ){
-	int error_id;
-
-	// tomo el mutex
-	if( (error_id = pthread_mutex_lock(&pQ->mtx_sync)) != 0 ){
-		return error_id;
-	}
-
-	// Hay elementos y nadie lo esta usando
-	unsigned long sz = pQ->idx_put - pQ->idx_get;
-
-	// libero el mutex de acceso
-	if( (error_id = pthread_mutex_unlock(&pQ->mtx_sync)) != 0 ){
-		return error_id;
-	}
-
-	return sz;
+	return  pQ->idx_put - pQ->idx_get;
 }
 
 
@@ -164,8 +149,6 @@ int workerThread_init(WorkerThread_t *pWT, long id, Queue_t *pQueue, StatMonitor
 	pWT->id = id;
 	pWT->pQueue = pQueue;
 	pWT->pMonitor = pSMonitor;
-
-	printf("Initializing thread %ld\n", id);
 
 	int error_id;
 	if( (error_id = pthread_create(&(pWT->thr), NULL, thread_fun, (void *) pWT)) != 0){

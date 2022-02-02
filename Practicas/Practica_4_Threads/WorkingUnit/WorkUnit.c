@@ -121,8 +121,9 @@ int QueueGet(Queue_t *pQ, WorkUnit_t* w_unit){
 
 // recupera la cantidad de elementos en la cola
 unsigned long QueueSize(Queue_t *pQ){
+	int error_id;
+unsigned long QueueSize(Queue_t *pQ){
 	return  pQ->idx_put - pQ->idx_get;
-}
 
 
 

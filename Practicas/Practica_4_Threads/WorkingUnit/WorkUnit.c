@@ -119,9 +119,9 @@ int QueueGet(Queue_t *pQ, WorkUnit_t* w_unit){
 	return 0;
 }
 
-// Toda un tarde revisando el codigo porque no me funcionaba por esta funcion del orto.
-// Aca no hay que tomar el mtex porque cuando llamamos a esta funcion en put y get
-// ya esta tomado. Termine poniendo un segundo atributo con el size
+/* Toda un tarde revisando el codigo porque no me funcionaba por esta funcion del orto.
+Aca no hay que tomar el mtex porque cuando llamamos a esta funcion en put y get
+ya esta tomado. Termine poniendo un segundo atributo con el size */
 unsigned long QueueSize(Queue_t *pQ){
 	return  pQ->size;
 }
@@ -145,6 +145,7 @@ void workUnit_init(WorkUnit_t *pWU, WorkUnitId id, void *context, ProcFunc_t fun
 	pWU->context = context;
 	workUnitStat_init(&pWU->stats);
 }
+
 // ------------------------------- WorkerThread_t
 int workerThread_init(WorkerThread_t *pWT, long id, Queue_t *pQueue, StatMonitor_t *pSMonitor){
 	pWT->id = id;
@@ -164,6 +165,11 @@ int workerThread_init(WorkerThread_t *pWT, long id, Queue_t *pQueue, StatMonitor
 
 
 // ------------------------------- WorkServer_t
+typedef struct mycontext{
+	WorkUnitId id;
+	int th_id;
+} ctx_t;
+
 void* thread_fun(void* arg){
 
 	WorkerThread_t *pWT = (WorkerThread_t *) arg;
@@ -177,9 +183,10 @@ void* thread_fun(void* arg){
 		if(w_unit.fun == NULL)
 			break;
 		
+		ctx_t ctx = {w_unit.id , pWT->id};
+		
 		w_unit.stats.startProcTime 	= time(NULL);	// Medio pedorro
-		// Que la unidad haga lo que tenga que hacer
-		w_unit.fun(w_unit.context);					
+		w_unit.fun((void *) &ctx);	// Que la unidad haga lo que tenga que hacer				
 		w_unit.stats.endProcTime 	= time(NULL);	// Medio pedorro
 
 		// Se la mando al monitor para que actualice las estadisticas
@@ -229,15 +236,14 @@ int workServer_init(WorkServer_t *pWServer, int unique_Queue){
 int workServer_destroy(WorkServer_t *pWServer){
 	// Creo un workUnit auxiliar para liquidar el thread
 	// NO se si hace falta allocar o podria ser var local
-	WorkUnit_t *end_WUnit = malloc(sizeof(WorkUnit_t));
-	end_WUnit->fun = NULL;
+	WorkUnit_t end_WUnit;
+	end_WUnit.fun = NULL;
 
 	for (int i = 0; i < NUM_WORKER_THREADS; i++){
 		// mando igual que la cantidad de threads, van a terminar
 		// en vez de mandar sobre la cola del server lo mando sobre la
 		// cola de cada worker (que puede ser la misma) para hacerlo mas generico
-		QueuePut(pWServer->workers[i].pQueue, end_WUnit);
-		// QueuePut(&(pWServer->pQueue[i]), end_WUnit);
+		QueuePut(pWServer->workers[i].pQueue, &end_WUnit);
 	}
 
 	// Hay que esperar que cada thread termine
@@ -262,7 +268,6 @@ int workServer_destroy(WorkServer_t *pWServer){
 	// libero la memoria
 	free(pWServer->pQueue);
 	free(pWServer->pMonitor);
-	free(end_WUnit);
 
 	return 0;
 }
@@ -282,9 +287,9 @@ int workServer_submit(WorkServer_t *pWServer, WorkUnit_t *pWUnit){
 
 // ------------------------------- FakeWorkUnitGen_t
 void fake_func(void* context){
-	long id = (long) context;
+	ctx_t *ctx = (ctx_t *) context;
 	int sTime = rand() % 5;
-	printf("In thread %ld: fake_func \"working\" for %d sec.\n", id, sTime);
+	printf("Thread #%d with WorkUnit #%d \"working\" for %d sec.\n", ctx->th_id, ctx->id, sTime);
 	sleep(sTime);
 }
 
@@ -383,8 +388,8 @@ int main(){
 	WorkServer_t workServer;
 	FakeWorkUnitGen_t fakeGenerator;
 
-	// workServer_init(&workServer, 1);
-	workServer_init(&workServer, 0);
+	workServer_init(&workServer, 1);
+	// workServer_init(&workServer, 0);
 
 	fakeWorkUnitGen_init(&fakeGenerator, fake_func);
 

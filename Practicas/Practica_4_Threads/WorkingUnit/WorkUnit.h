@@ -54,7 +54,7 @@ typedef struct{
 
 typedef struct{
 	pthread_t thr;
-	long id;
+	long id;			// Deberia ser el id del thread no del unit
 
 	Queue_t *pQueue;	// Para el caso b, donde cada thread tiene su cola
 	StatMonitor_t *pMonitor;

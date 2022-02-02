@@ -69,7 +69,6 @@ int QueuePut(Queue_t *pQ, WorkUnit_t* w_unit){
 	printf("en put(): tengo el mutex\n");
 
 	// espero a que la cola tenga lugar
-	printf("en put\n");
 	while(QueueSize(pQ) == Q_SZ){
 		pthread_cond_wait(&pQ->put_ready, &pQ->mtx_sync);
 	}
@@ -333,8 +332,6 @@ void fakeWorkUnitGen_use(FakeWorkUnitGen_t *pFWUGen, WorkServer_t *pWServer, int
 
 	// No se si deberia allocar
 }
-
-
 
 
 // ------------------------------- StatMonitor_t

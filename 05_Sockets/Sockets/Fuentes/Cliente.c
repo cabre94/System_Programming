@@ -7,8 +7,11 @@
 #include <stdio.h>
 #include <Socket_Cliente.h>
 #include <Socket.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
 
-main ()
+int main ()
 {
 	/*
 	* Descriptor del socket y buffer para datos
@@ -52,4 +55,6 @@ main ()
 	* Se cierra el socket con el servidor
 	*/
 	close (Socket_Con_Servidor);
+
+	return 0;
 }

@@ -8,6 +8,8 @@
 #include <netdb.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 /*
 * Conecta con un servidor Unix, en la misma maquina.

@@ -21,6 +21,11 @@
 		"semaphore.h": "c",
 		"ratio": "c",
 		"stat.h": "c",
-		"mqueue.h": "c"
+		"mqueue.h": "c",
+		"queue.h": "c",
+		"pthread.h": "c",
+		"workunit.h": "c",
+		"in.h": "c",
+		"netdb.h": "c"
 	}
 }

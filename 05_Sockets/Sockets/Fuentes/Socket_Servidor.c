@@ -103,8 +103,8 @@ int Acepta_Conexion_Cliente (int Descriptor)
 int Abre_Socket_Inet (char *Servicio)
 {
 	struct sockaddr_in Direccion;
-	struct sockaddr Cliente;
-	socklen_t Longitud_Cliente;
+	// struct sockaddr Cliente;
+	// socklen_t Longitud_Cliente;
 	struct servent *Puerto;
 	int Descriptor;
 

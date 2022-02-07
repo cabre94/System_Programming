@@ -8,9 +8,11 @@
 #include <Socket.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
-main ()
-{
+
+int main (){
 	/*
 	* Descriptores de socket servidor y de socket con el cliente
 	*/
@@ -63,4 +65,6 @@ main ()
 	*/
 	close (Socket_Cliente);
 	close (Socket_Servidor);
+
+	return 0;
 }

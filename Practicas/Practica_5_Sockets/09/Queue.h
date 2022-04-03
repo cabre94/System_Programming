@@ -9,6 +9,7 @@
 #include "UDTs.h"
 
 #define Q_SZ 10
+#define QUEUE_TIMEOUT 5
 
 // typedef struct WorkUnit_t;
 struct WorkUnit_t;
@@ -29,13 +30,13 @@ int QueueInit(Queue_t *pQ);
 // Desstruye el contenedor, liberando recursos
 int QueueDestroy(Queue_t *pQ);
 // Agrega un Nuevo elemento. Bloquea si no hay espacio
-int QueuePut(Queue_t *pQ, Req_t* w_unit);
+int QueuePut(Queue_t *pQ, Req_t* pReq);
 // Remueve y guarda un elemento, bloquea si no hay elementos
-int QueueGet(Queue_t *pQ, Req_t* w_unit);
+int QueueGet(Queue_t *pQ, Req_t* pReq);
 // recupera la cantidad de elementos en la cola
 unsigned long QueueSize(Queue_t *pQ);
 // monitorea la cola
-int QueueMonitor(Queue_t *pQ);
+int QueueMonitor(Queue_t *pQ, char prefix);
 
 #endif // !QUEUE_H
 

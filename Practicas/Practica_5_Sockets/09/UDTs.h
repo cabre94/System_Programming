@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include <string.h>
 
+// #include "Queue.h"
+
+struct Queue_t;
 
 #define TIME_RANGE 1000
 

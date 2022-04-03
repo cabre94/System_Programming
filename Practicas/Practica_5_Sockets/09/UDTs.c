@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "UDTs.h"
+#include "Queue.h"
 
 
 void init_Req(Req_t* pReq, int id_){
@@ -30,5 +31,4 @@ void print_idWTimes(Req_t* pReq){
 	printf(" Total: %lfs\n",
 		  (pReq->times.ms_A+pReq->times.ms_B+pReq->times.ms_C) / 1000.0);
 }
-
 

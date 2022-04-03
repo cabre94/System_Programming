@@ -9,5 +9,8 @@ CPPFLAGS = -g -Wall -I.
 main : main.c
 	gcc ${CPPFLAGS} Queue.o UDTs.o main.c -o exe -lpthread
 
+test : Queue.o UDTs.o
+	gcc ${CPPFLAGS} Queue.o UDTs.o test.c -o exe -lpthread
+
 clean :
 	rm *.o exe

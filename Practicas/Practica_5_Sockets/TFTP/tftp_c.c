@@ -22,6 +22,21 @@ void *get_in_addr(struct sockaddr *sa)
 	return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
 
+int send_to(int sockfd, const char* buff, int len, int f, const struct sockaddr *addr, const socklen_t addr_len){
+	int bytesSent;
+	int totalSent = 0;
+
+	while (totalSent < len){
+		bytesSent = sendto(sockfd, buff+totalSent, len-totalSent, f, addr, addr_len);
+		if(bytesSent > 0)
+			totalSent += bytesSent;
+		else if(bytesSent == 0 || (bytesSent == -1 && errno != EINTR))
+			return -1;
+	}
+	
+	return totalSent;
+}
+
 //CHECKS FOR TIMEOUT
 int check_timeout(int sockfd, char *buf, struct sockaddr_storage their_addr, socklen_t addr_len){
 	fd_set fds;
@@ -97,11 +112,12 @@ int main(int argc, char* argv[]){
 		char *message = make_rrq(file);
 		char last_recv_message[MAXBUFLEN];strcpy(last_recv_message, "");
 		char last_sent_ack[10];strcpy(last_sent_ack, message);
-		if((numbytes = sendto(sockfd, message, strlen(message), 0, p->ai_addr, p->ai_addrlen)) == -1){
-			perror("CLIENT: sendto");
+		if((numbytes = send_to(sockfd, message, strlen(message), 0, p->ai_addr, p->ai_addrlen)) == -1){
+			perror("CLIENT: send_to");
 			exit(1);
 		}
 		printf("CLIENT: sent %d bytes to %s\n", numbytes, server);
+		free(message);
 
 		char filename[MAX_FILENAME_LEN];
 		strcpy(filename, file);
@@ -135,7 +151,7 @@ int main(int argc, char* argv[]){
 
 			//SENDING LAST ACK AGAIN - AS IT WAS NOT REACHED
 			if(strcmp(buf, last_recv_message) == 0){
-				sendto(sockfd, last_sent_ack, strlen(last_sent_ack), 0, (struct sockaddr *)&their_addr, addr_len);
+				send_to(sockfd, last_sent_ack, strlen(last_sent_ack), 0, (struct sockaddr *)&their_addr, addr_len);
 				continue;
 			}
 
@@ -149,12 +165,13 @@ int main(int argc, char* argv[]){
 			strncpy(block, buf+2, 2);
 			block[2] = '\0';
 			char *t_msg = make_ack(block);
-			if((numbytes = sendto(sockfd, t_msg, strlen(t_msg), 0, p->ai_addr, p->ai_addrlen)) == -1){
-				perror("CLIENT ACK: sendto");
+			if((numbytes = send_to(sockfd, t_msg, strlen(t_msg), 0, p->ai_addr, p->ai_addrlen)) == -1){
+				perror("CLIENT ACK: send_to");
 				exit(1);
 			}
 			printf("CLIENT: sent %d bytes\n", numbytes);
 			strcpy(last_sent_ack, t_msg);
+			free(t_msg);
 		} while(c_written == MAX_READ_LEN);
 		printf("NEW FILE: %s SUCCESSFULLY MADE\n", filename);
 		fclose(fp);
@@ -162,8 +179,8 @@ int main(int argc, char* argv[]){
 		//SENDING WRQ
 		char *message = make_wrq(file);
 		char *last_message;
-		if((numbytes = sendto(sockfd, message, strlen(message), 0, p->ai_addr, p->ai_addrlen)) == -1){
-			perror("CLIENT: sendto");
+		if((numbytes = send_to(sockfd, message, strlen(message), 0, p->ai_addr, p->ai_addrlen)) == -1){
+			perror("CLIENT: send_to");
 			exit(1);
 		}
 		printf("CLIENT: sent %d bytes to %s\n", numbytes, server);
@@ -186,8 +203,8 @@ int main(int argc, char* argv[]){
 			} else if(numbytes == -2){//timeout
 				printf("CLIENT: try no. %d\n", times+1);
 				int temp_bytes;
-				if((temp_bytes = sendto(sockfd, last_message, strlen(last_message), 0, p->ai_addr, p->ai_addrlen)) == -1){
-					perror("CLIENT ACK: sendto");
+				if((temp_bytes = send_to(sockfd, last_message, strlen(last_message), 0, p->ai_addr, p->ai_addrlen)) == -1){
+					perror("CLIENT ACK: send_to");
 					exit(1);
 				}
 				printf("CLIENT: sent %d bytes AGAIN\n", temp_bytes);
@@ -234,8 +251,8 @@ int main(int argc, char* argv[]){
 
 				//SENDING FILE - DATA PACKET
 				char *t_msg = make_data_pack(block, temp);
-				if((numbytes = sendto(sockfd, t_msg, strlen(t_msg), 0, p->ai_addr, p->ai_addrlen)) == -1){
-					perror("CLIENT: sendto");
+				if((numbytes = send_to(sockfd, t_msg, strlen(t_msg), 0, p->ai_addr, p->ai_addrlen)) == -1){
+					perror("CLIENT: send_to");
 					exit(1);
 				}
 				printf("CLIENT: sent %d bytes to %s\n", numbytes, server);
@@ -256,8 +273,8 @@ int main(int argc, char* argv[]){
 					} else if(numbytes == -2){//timeout
 						printf("CLIENT: try no. %d\n", times+1);
 						int temp_bytes;
-						if((temp_bytes = sendto(sockfd, last_message, strlen(last_message), 0, p->ai_addr, p->ai_addrlen)) == -1){
-							perror("CLIENT ACK: sendto");
+						if((temp_bytes = send_to(sockfd, last_message, strlen(last_message), 0, p->ai_addr, p->ai_addrlen)) == -1){
+							perror("CLIENT ACK: send_to");
 							exit(1);
 						}
 						printf("CLIENT: sent %d bytes AGAIN\n", temp_bytes);

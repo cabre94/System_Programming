@@ -7,6 +7,7 @@
 #include <sys/mman.h>
 #include <sys/wait.h>
 #include <pthread.h>
+#include <assert.h>
 
 #include "Queue.h"
 // typedef struct WorkUnit_t;
@@ -72,11 +73,16 @@ int QueuePut(Queue_t *pQ, Req_t* w_unit){
 	}
 
 	// espero a que la cola tenga lugar
-	while(QueueSize(pQ) == Q_SZ){
+	while(pQ->size == Q_SZ){
+	// while(QueueSize(pQ) == Q_SZ){
 		pthread_cond_wait(&pQ->put_ready, &pQ->mtx_sync);
 	}
 
 	pQ->units[pQ->idx_put % Q_SZ] = *w_unit;
+	int kk = pQ->units[pQ->idx_put % Q_SZ].r_id;
+	// printf("En put, tengo %d y se guardo %d\n", w_unit->r_id, kk);
+	// fflush(stdout);
+	assert(w_unit->r_id == kk);
 	pQ->idx_put++;
 	pQ->size++;
 
@@ -100,29 +106,49 @@ int QueueGet(Queue_t *pQ, Req_t* w_unit){
 	int error_id;
 
 	// tomo el mutex
-	if( (error_id = pthread_mutex_lock(&(pQ->mtx_sync))) != 0 ){
-		fprintf(stderr, "Error %d in QueueGet->pthread_mutex_lock\n", error_id);
-		return error_id;
+	// if( (error_id = pthread_mutex_lock(&(pQ->mtx_sync))) != 0 ){
+	// 	printf("Error %d in QueueGet->pthread_mutex_lock\n", error_id);
+	// 	return error_id;
+	// }
+
+	// 
+	struct timespec ts;
+	ts.tv_nsec = 0;
+	ts.tv_sec  = QUEUE_TIMEOUT;
+	if((error_id = pthread_mutex_timedlock(&pQ->mtx_sync, &ts)) != 0 ){
+		if(error_id == ETIMEDOUT){
+			return error_id;
+		}else{
+			printf("Error %d in QueueGet->pthread_mutex_lock\n", error_id);
+			return error_id;
+		}
 	}
 
+
+
+
+
 	// Espero a que la cola tenga algo
-	while(QueueSize(pQ) == 0){
+	while((pQ->size) == 0){
+	// while(QueueSize(pQ) == 0){
 		pthread_cond_wait(&pQ->get_ready, &(pQ->mtx_sync));
 	}
 
 	*w_unit = pQ->units[pQ->idx_get % Q_SZ];	// Guardo el coso
+	// printf("En get, tengo %d y se guardo %d\n", pQ->units[pQ->idx_get % Q_SZ].r_id, w_unit->r_id);
+	assert(pQ->units[pQ->idx_get % Q_SZ].r_id == w_unit->r_id);
 	pQ->idx_get++;
 	pQ->size--;
 
 	// Mando señal de que hay lugar por si alguien esta esperando
 	if ((error_id = pthread_cond_signal(&(pQ->put_ready))) != 0){
-		fprintf(stderr, "Error %d in QueueGet->pthread_cond_signal\n", error_id);
+		printf("Error %d in QueueGet->pthread_cond_signal\n", error_id);
 		return error_id;
 	}
 
 	// libero el mutex de acceso
 	if( (error_id = pthread_mutex_unlock(&pQ->mtx_sync)) != 0 ){
-		fprintf(stderr, "Error %d in QueueGet->pthread_mutex_unlock\n", error_id);
+		printf("Error %d in QueueGet->pthread_mutex_unlock\n", error_id);
 		return error_id;
 	}
 
@@ -135,21 +161,30 @@ unsigned long QueueSize(Queue_t *pQ){
 
 }
 
-// // monitorea la cola
-// void QueueMonitor(Queue_t *pQ){
-// 	assert(sem_wait(&pQ->mtx_sync) != -1); // Por si alguien lo esta  usando
+// monitorea la cola
+int QueueMonitor(Queue_t *pQ, char prefix){
+	int error_id;
+	if( (error_id = pthread_mutex_lock(&(pQ->mtx_sync))) != 0 ){
+		printf("Error %d in QueueGet->pthread_mutex_lock\n", error_id);
+		return error_id;
+	}
 
-// 	// Hay elementos y nadie lo esta usando
-// 	int sz = pQ->idx_put - pQ->idx_get;
-// 	printf("-> ");
-// 	for(int i = 0; i < sz; i++){
-//         printf("%d -> ", pQ->elem[(pQ->idx_get + i) % Q_SZ]);
-//     }
-// 	putchar('\n');
+	// Hay elementos y nadie lo esta usando
+	int sz = pQ->idx_put - pQ->idx_get;
+	printf("%c: -> ", prefix);
+	for(int i = 0; i < sz; i++){
+        printf("%d -> ", pQ->units[(pQ->idx_get + i) % Q_SZ].r_id);
+    }
+	putchar('\n');
+	fflush(stdout);
 
-// 	assert(sem_post(&pQ->mtx_sync) != -1); // Lo libero
+	if( (error_id = pthread_mutex_unlock(&pQ->mtx_sync)) != 0 ){
+		printf("Error %d in QueueGet->pthread_mutex_unlock\n", error_id);
+		return error_id;
+	}
 
-// }
+	return 0;
+}
 
 
 // int main(){

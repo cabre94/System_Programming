@@ -21,6 +21,21 @@ void *get_in_addr(struct sockaddr *sa)
 	return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
 
+int send_to(int sockfd, const char* buff, int len, int f, const struct sockaddr *addr, const socklen_t addr_len){
+	int bytesSent;
+	int totalSent = 0;
+
+	while (totalSent < len){
+		bytesSent = sendto(sockfd, buff+totalSent, len-totalSent, f, addr, addr_len);
+		if(bytesSent > 0)
+			totalSent += bytesSent;
+		else if(bytesSent == 0 || (bytesSent == -1 && errno != EINTR))
+			return -1;
+	}
+	
+	return totalSent;
+}
+
 //CHECKS FOR TIMEOUT
 int check_timeout(int sockfd, char *buf, struct sockaddr_storage their_addr, socklen_t addr_len){
 	fd_set fds;
@@ -115,7 +130,7 @@ int main(void){
 			fprintf(stderr,"SERVER: file '%s' does not exist, sending error packet\n", filename);
 			char *e_msg = make_err("02", "ERROR_FILE_NOT_FOUND");
 			printf("%s\n", e_msg);
-			sendto(sockfd, e_msg, strlen(e_msg), 0, (struct sockaddr *)&their_addr, addr_len);
+			send_to(sockfd, e_msg, strlen(e_msg), 0, (struct sockaddr *)&their_addr, addr_len);
 			exit(1);
 		}
 
@@ -145,8 +160,8 @@ int main(void){
 
 			//SENDING - DATA PACKET
 			char *t_msg = make_data_pack(block, temp);
-			if((numbytes = sendto(sockfd, t_msg, strlen(t_msg), 0, (struct sockaddr *)&their_addr, addr_len)) == -1){
-				perror("SERVER ACK: sendto");
+			if((numbytes = send_to(sockfd, t_msg, strlen(t_msg), 0, (struct sockaddr *)&their_addr, addr_len)) == -1){
+				perror("SERVER ACK: send_to");
 				exit(1);
 			}
 			printf("SERVER: sent %d bytes\n", numbytes);
@@ -166,8 +181,8 @@ int main(void){
 				} else if(numbytes == -2){//timeout
 					printf("SERVER: try no. %d\n", times+1);
 					int temp_bytes;
-					if((temp_bytes = sendto(sockfd, t_msg, strlen(t_msg), 0, p->ai_addr, p->ai_addrlen)) == -1){
-						perror("SERVER: ACK: sendto");
+					if((temp_bytes = send_to(sockfd, t_msg, strlen(t_msg), 0, p->ai_addr, p->ai_addrlen)) == -1){
+						perror("SERVER: ACK: send_to");
 						exit(1);
 					}
 					printf("SERVER: sent %d bytes AGAIN\n", temp_bytes);
@@ -184,6 +199,7 @@ int main(void){
 			++block;
 			if(block>MAX_PACKETS)
 				block = 1;
+			free(t_msg);
 		}
 		fclose(fp);
 	} else if(buf[0] == '0' && buf[1] == '2'){//WRITE REQUEST
@@ -191,11 +207,12 @@ int main(void){
 		char *message = make_ack("00");
 		char last_recv_message[MAXBUFLEN];strcpy(last_recv_message, buf);
 		char last_sent_ack[10];strcpy(last_sent_ack, message);
-		if((numbytes = sendto(sockfd, message, strlen(message), 0, (struct sockaddr *)&their_addr, addr_len)) == -1){
-			perror("SERVER ACK: sendto");
+		if((numbytes = send_to(sockfd, message, strlen(message), 0, (struct sockaddr *)&their_addr, addr_len)) == -1){
+			perror("SERVER ACK: send_to");
 			exit(1);
 		}
 		printf("SERVER: sent %d bytes\n", numbytes);
+		
 
 		char filename[MAX_FILENAME_LEN];
 		strcpy(filename, buf+2);
@@ -204,7 +221,7 @@ int main(void){
 		if(access(filename, F_OK) != -1){ //SENDING ERROR PACKET - DUPLICATE FILE
 			fprintf(stderr,"SERVER: file %s already exists, sending error packet\n", filename);
 			char *e_msg = make_err("06", "ERROR_FILE_ALREADY_EXISTS");
-			sendto(sockfd, e_msg, strlen(e_msg), 0, (struct sockaddr *)&their_addr, addr_len);
+			send_to(sockfd, e_msg, strlen(e_msg), 0, (struct sockaddr *)&their_addr, addr_len);
 			exit(1);
 		}
 
@@ -212,7 +229,7 @@ int main(void){
 		if(fp == NULL || access(filename, W_OK) == -1){ //SENDING ERROR PACKET - ACCESS DENIED
 			fprintf(stderr,"SERVER: file %s access denied, sending error packet\n", filename);
 			char *e_msg = make_err("05", "ERROR_ACCESS_DENIED");
-			sendto(sockfd, e_msg, strlen(e_msg), 0, (struct sockaddr *)&their_addr, addr_len);
+			send_to(sockfd, e_msg, strlen(e_msg), 0, (struct sockaddr *)&their_addr, addr_len);
 			exit(1);
 		}
 		
@@ -230,7 +247,7 @@ int main(void){
 
 			//SENDING LAST ACK AGAIN - AS IT HAS NOT REACHED
 			if(strcmp(buf, last_recv_message) == 0){
-				sendto(sockfd, last_sent_ack, strlen(last_sent_ack), 0, (struct sockaddr *)&their_addr, addr_len);
+				send_to(sockfd, last_sent_ack, strlen(last_sent_ack), 0, (struct sockaddr *)&their_addr, addr_len);
 				continue;
 			}
 
@@ -244,8 +261,8 @@ int main(void){
 			strncpy(block, buf+2, 2);
 			block[2] = '\0';
 			char *t_msg = make_ack(block);
-			if((numbytes = sendto(sockfd, t_msg, strlen(t_msg), 0, (struct sockaddr *)&their_addr, addr_len)) == -1){
-				perror("SERVER ACK: sendto");
+			if((numbytes = send_to(sockfd, t_msg, strlen(t_msg), 0, (struct sockaddr *)&their_addr, addr_len)) == -1){
+				perror("SERVER ACK: send_to");
 				exit(1);
 			}
 			printf("SERVER: sent %d bytes\n", numbytes);

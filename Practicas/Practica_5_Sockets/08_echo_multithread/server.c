@@ -17,7 +17,8 @@
 #define ACCEPT_TIMEOUT 5
 #define PORT 6900
 #define SERVER_IP "127.0.0.1"
-#define BROADCAST_IP "127.255.255.255"
+// #define BROADCAST_IP "127.255.255.255"
+#define BROADCAST_IP "192.168.0.255"
 
 
 
@@ -101,6 +102,7 @@ int main(int argc, const char* argv[]){
 	bzero((void*) &announce_addr, addr_len);
 	announce_addr.sin_family = AF_INET;
 	// serv_addr.sin_addr.s_addr 	= htonl(inet_addr(argv[2]));
+	// if( inet_aton(BROADCAST_IP, &announce_addr.sin_addr) == 0){
 	if( inet_aton(BROADCAST_IP, &announce_addr.sin_addr) == 0){
 		error("Invalid Address");
 	}
@@ -116,9 +118,10 @@ int main(int argc, const char* argv[]){
 	bzero((void*) &serv_addr, sizeof(serv_addr));
 	serv_addr.sin_family 		= AF_INET;
 	// serv_addr.sin_addr.s_addr 	= htonl(INADDR_ANY);
-	if( inet_aton(SERVER_IP, &serv_addr.sin_addr) == 0){
-		error("Invalid Address");
-	}
+	// if( inet_aton(SERVER_IP, &serv_addr.sin_addr) == 0){
+	// 	error("Invalid Address");
+	// }
+	serv_addr.sin_addr.s_addr 	= htonl(INADDR_ANY);
 	serv_addr.sin_port 			= htons(PORT);
 
 	int val = 1;	// No tengo muy claro que pasa con el val

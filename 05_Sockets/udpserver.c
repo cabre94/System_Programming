@@ -46,7 +46,7 @@ int main(){
 		if(recvfrom(s, buffer, BUFFER_SZ, 0, (struct sockaddr *) &si_other, &slen) == -1){
 			die("recvfrom()");
 		}
-		printf("Received packet from %s:%d\nData: %s\n\n",
+		printf("Received packet from %s:%d\nData: %s\n",
 			inet_ntoa(si_other.sin_addr), ntohs(si_other.sin_port), buffer);
 	}
 
